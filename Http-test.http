@@ -1,0 +1,30 @@
+POST http://localhost:8080/person/
+Content-Type: application/json
+
+{
+  "name": "Maria testing",
+  "edad": 5555
+}
+
+###
+
+POST http://localhost:8080/processtdc/
+Content-Type: application/json
+
+{
+  "params": [
+    {
+      "name": "monto",
+      "value": "800"
+    },
+    {
+      "name": "exchange_rate",
+      "value": "500"
+    }
+  ],
+  "payload" : "CRC 163.45  \n    USD 0.00   \n    CRC 2,880.65"
+}
+
+###
+
+GET http://localhost:8080/getTime/
