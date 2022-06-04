@@ -216,7 +216,7 @@ class TDCProcess {
 
     private fun recalTasa(copy: MutableList<Double>, tasaList: MutableList<Double>, amountList: List<Double>, tasaSum: Double, amount: Double): Double {
         var suma1 = tasaSum
-        copy.forEachIndexed { index, oldTasa ->
+        copy.forEachIndexed { index, _ ->
             val newTasa = tasaList[index]
             val increase = canIncrease( newTasa + 0.1, amountList[index], amount )
             if (increase > newTasa && newTasa > 0.00) {
