@@ -5,14 +5,14 @@ Content-Type: application/json
   "params": [
     {
       "name": "monto",
-      "value": "800"
+      "value": "1000"
     },
     {
       "name": "exchange_rate",
-      "value": "500"
+      "value": "687"
     }
   ],
-  "payload" : "CRC 42,624.02  \n  USD 0.00 \n   CRC 65,407.65 \n   USD 290.04 \n  CRC 693,077.27 \n   USD 32.07 \n   CRC 502.95 \n   USD 184.57"
+  "payload" : "CRC 83,476.62  \n USD 0.00  \n    CRC 103,928.00 \n USD 569.14     \n CRC 365,256.48 \n USD 552.72     \n CRC 0.00       \n USD 0.00  "
 }
 
 ###
