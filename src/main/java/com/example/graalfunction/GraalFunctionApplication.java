@@ -42,40 +42,6 @@ import java.util.function.Supplier;
 
 
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = {
-		XADataSourceAutoConfiguration.class
-		, WebSocketReactiveAutoConfiguration.class
-, WebSessionIdResolverAutoConfiguration.class
-, WebServicesAutoConfiguration.class
-, WebServiceTemplateAutoConfiguration.class
-, WebFluxAutoConfiguration.class,
-		WebClientAutoConfiguration.class
-, TransactionAutoConfiguration.class
-, SolrAutoConfiguration.class
-, SpringDataWebAutoConfiguration.class
-, SendGridAutoConfiguration.class
-, ActiveMQAutoConfiguration.class
-		, ArtemisAutoConfiguration.class
-		, BatchAutoConfiguration.class
-, CacheAutoConfiguration.class
-, CassandraAutoConfiguration.class
-, CassandraDataAutoConfiguration.class
-		, CassandraReactiveDataAutoConfiguration.class
-, CodecsAutoConfiguration.class
-		, CouchbaseAutoConfiguration.class
-, CouchbaseDataAutoConfiguration.class
-		, CouchbaseReactiveDataAutoConfiguration.class
-, DataSourceAutoConfiguration.class
-		, ElasticsearchDataAutoConfiguration.class
-, EmbeddedMongoAutoConfiguration.class
-, ErrorWebFluxAutoConfiguration.class
-		, FlywayAutoConfiguration.class
-		, GraphQlAutoConfiguration.class
-
-
-
-
-})
 public class GraalFunctionApplication {
 
 	public static void main(String[] args) {
