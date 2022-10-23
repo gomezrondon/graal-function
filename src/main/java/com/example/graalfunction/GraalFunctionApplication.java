@@ -4,43 +4,17 @@ import com.gomezrondon.cloudruntest.TDCProcess;
 import com.gomezrondon.cloudruntest.entities.Param;
 import com.gomezrondon.cloudruntest.entities.Payload;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
-import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
-import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.cassandra.CassandraReactiveDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.couchbase.CouchbaseDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.couchbase.CouchbaseReactiveDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration;
-import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
-import org.springframework.boot.autoconfigure.graphql.GraphQlAutoConfiguration;
-import org.springframework.boot.autoconfigure.http.codec.CodecsAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQAutoConfiguration;
-import org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
-import org.springframework.boot.autoconfigure.sendgrid.SendGridAutoConfiguration;
-import org.springframework.boot.autoconfigure.solr.SolrAutoConfiguration;
-import org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.WebSessionIdResolverAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
-import org.springframework.boot.autoconfigure.webservices.WebServicesAutoConfiguration;
-import org.springframework.boot.autoconfigure.webservices.client.WebServiceTemplateAutoConfiguration;
-import org.springframework.boot.autoconfigure.websocket.reactive.WebSocketReactiveAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-
+@RestController
 @SpringBootApplication
 public class GraalFunctionApplication {
 
@@ -58,7 +32,18 @@ public class GraalFunctionApplication {
 		return Person::getName;
 	}
 
-	@Bean
+
+	@PostMapping("/processtdc")
+	public String processTDC(@RequestBody Payload payload) {
+		String monto = getParameter(payload, "monto");
+		String exchange_rate = getParameter(payload, "exchange_rate");
+		String payload1 = payload.getPayload();
+
+		String calculatePayment = TDCProcess.Companion.calculatePayment(exchange_rate, monto, payload1);
+		return calculatePayment + "\n Done! " + getTime();
+	}
+
+//	@Bean
 	public Function<Payload, String> processtdc() {
 		return payload -> {
 			String monto = getParameter(payload, "monto");
