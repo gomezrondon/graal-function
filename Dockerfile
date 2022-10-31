@@ -1,11 +1,13 @@
-FROM adoptopenjdk/openjdk11:alpine-slim as builder
-ADD /build/libs/graal-function-0.0.1-SNAPSHOT.jar application.jar
+FROM eclipse-temurin:17-jdk-alpine AS builder
+WORKDIR /workspace/app
 
-RUN java -Djarmode=layertools -jar application.jar extract
+COPY . /workspace/app
+RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build -x test
+RUN java -Djarmode=layertools -jar /workspace/app/build/libs/*-SNAPSHOT.jar extract
 
-FROM adoptopenjdk:11-jre-hotspot
-COPY --from=builder dependencies/ ./
-COPY --from=builder snapshot-dependencies/ ./
-COPY --from=builder spring-boot-loader/ ./
-COPY --from=builder application/ ./
+FROM eclipse-temurin:17-jdk-alpine
+COPY --from=builder /workspace/app/dependencies/ ./
+COPY --from=builder /workspace/app/snapshot-dependencies/ ./
+COPY --from=builder /workspace/app/spring-boot-loader/ ./
+COPY --from=builder /workspace/app/application/ ./
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
