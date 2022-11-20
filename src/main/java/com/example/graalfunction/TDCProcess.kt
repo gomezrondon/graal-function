@@ -28,6 +28,7 @@ class TDCProcess {
     fun loadData(text: String): List<Tdc> {
         val lines = text.split("\n").filter { it.isNotEmpty() }.map { it.trim() }
         val totalLines = lines.count()
+//        val defaultTasa: Double = 100.0/totalLines
         val defaultTasa: Double = 100.0/totalLines
 
         val listOfTdc = lines.map { it.replace(",", "") }
@@ -61,13 +62,14 @@ class TDCProcess {
 
     private fun processData(listOfTdc: List<Tdc>): List<Tdc> {
         val totalLines = listOfTdc.size
-        var defaultTasa: Double = 100.0/totalLines
+        val avgTasa = listOfTdc.map { it.percentage }.average()
+        var defaultTasa: Double = avgTasa
 
         var sumaTotal = 0.0
         do {
             var sumaTemp = sumaTotal
             defaultTasa = recalDefaultTasa(listOfTdc as MutableList<Tdc>, money, defaultTasa, percentage)
-            listOfTdc.filter { !it.isDone }.map { it.percentage = defaultTasa }
+            listOfTdc.filter { !it.isDone && it.percentage < defaultTasa  }.map { it.percentage = defaultTasa }
             sumaTotal=  listOfTdc.filter { it.isDone }.map { it.percentage }.sum()
 
         }while (sumaTemp != sumaTotal)
@@ -87,7 +89,8 @@ class TDCProcess {
             listOfTdc.map {
                 if (!it.isDone) {
                     val newTasa = canIncrease(it.percentage, it.amount, money)
-                    it.calculateisDone(newTasa, defaultTasa1)
+                    val canIncrease = canIncrease(it.percentage + 1, it.amount, money)
+                    it.calculateisDone(newTasa, canIncrease)
                     it.percentage = newTasa
                 }
             }
@@ -98,7 +101,10 @@ class TDCProcess {
                 return 0.0
             }
 
-            defaultTasa1 = tasaFija.div(listOfTdc.filter { !it.isDone }.count())
+            val PaierList = listOfTdc.partition { !it.isDone && it.percentage > defaultTasa }
+            val conPorcentListOwner = 100 - PaierList.first.map { it.percentage }.sum()
+            val restantes = PaierList.second.filter { !it.isDone }.count()
+            defaultTasa1 = conPorcentListOwner.div(restantes) // hay que corregir
             return defaultTasa1
         }
 
@@ -261,8 +267,9 @@ data class Tdc(val typeTdc:String,
                var payment: Double = 0.0
                , var isDone:Boolean = false){
 
-    fun calculateisDone(tasa:Double, defaultTasa: Double) {
-        if (tasa < defaultTasa) {
+    fun calculateisDone(newTasa:Double, defaultTasa: Double) {
+        val diff = defaultTasa - newTasa
+        if (diff < 0.5) {
             this.isDone = true
         }
     }

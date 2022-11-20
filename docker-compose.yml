@@ -2,6 +2,6 @@ version: '2.1'
 
 services:
   converter:
-    build: .
+    image: graal-function:0.0.1-SNAPSHOT
     ports:
       - 8080:8080

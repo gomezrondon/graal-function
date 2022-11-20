@@ -1,6 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '3.0.0-RC1'
+	id 'org.springframework.boot' version '3.0.0-RC2'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.graalvm.buildtools.native' version '0.9.17'
 	id 'java'
 	id 'org.jetbrains.kotlin.jvm' version '1.6.21'
 }
@@ -26,9 +27,9 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.named('bootBuildImage') {
+/*tasks.named('bootBuildImage') {
 	buildpacks =  ['gcr.io/paketo-buildpacks/bellsoft-liberica:9.9.0-ea', 'gcr.io/paketo-buildpacks/java-native-image']
-}
+}*/
 
 tasks.named('test') {
 	useJUnitPlatform()
