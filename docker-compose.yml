@@ -4,4 +4,4 @@ services:
   converter:
     image: graal-function:0.0.1-SNAPSHOT
     ports:
-      - 8080:8080
+      - "8080:8080"
